@@ -3,6 +3,8 @@ package com.sixtel.bitdate;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -26,6 +28,8 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
     private float mOriginX;
     private float mOriginY;
 
+    private GestureDetector mGestureDetector;
+
     public CardStackContainer(Context context) {
         this(context, null, 0);
     }
@@ -36,6 +40,7 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
 
     public CardStackContainer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mGestureDetector = new GestureDetector(context, new FlingListener());
     }
 
     public void setAdapter(CardAdapter adapter) {
@@ -49,6 +54,9 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
+        mGestureDetector.onTouchEvent(event);
+
         int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
@@ -96,7 +104,13 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
                 .setInterpolator(new AccelerateInterpolator())
                 .x(mOriginX)
                 .y(mOriginY);
+    }
 
+    private class FlingListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
+            return true;
+        }
     }
 }
