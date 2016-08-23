@@ -10,3 +10,4 @@ BitFountain Android Tutorial to work with Android
 * Add in User class and DAO
 * Add in CardContainers and CardAdapter
 * Add OnTouchListener to Cards to capture touches and drags
+* Add in movement to the Card

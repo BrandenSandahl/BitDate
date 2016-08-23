@@ -15,6 +15,12 @@ import android.widget.RelativeLayout;
 public class CardStackContainer extends RelativeLayout implements View.OnTouchListener {
 
     private CardAdapter mAdapter;
+    //where we actually touched
+    private float mLastTouchX;
+    private float mLastTouchY;
+    //where the card is positioned on the screen
+    private float mPositionX;
+    private float mPositionY;
 
     public CardStackContainer(Context context) {
         this(context, null, 0);
@@ -42,10 +48,32 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
         int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                mLastTouchX = event.getX();
+                mLastTouchY = event.getY();
+
+                mPositionX = v.getX();
+                mPositionY = v.getY();
+
                 break;
             case MotionEvent.ACTION_UP:
                 break;
             case MotionEvent.ACTION_MOVE:
+                //get where we have moved to
+                float xMove = event.getX();
+                float yMove = event.getY();
+
+                //get the change in original position and where we moved to
+                float changeX = xMove - mLastTouchX;
+                float changeY = yMove - mLastTouchY;
+
+                //update original position with the difference
+                mPositionX += changeX;
+                mPositionY +=  changeY;
+
+                //reset the position (IE move the card)
+                v.setX(mPositionX);
+                v.setY(mPositionY);
+
                 break;
         }
         return true;
