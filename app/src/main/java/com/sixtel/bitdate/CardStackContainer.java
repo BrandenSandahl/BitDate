@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.RelativeLayout;
 
 /**
@@ -21,6 +22,9 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
     //where the card is positioned on the screen
     private float mPositionX;
     private float mPositionY;
+    //original positions
+    private float mOriginX;
+    private float mOriginY;
 
     public CardStackContainer(Context context) {
         this(context, null, 0);
@@ -54,8 +58,12 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
                 mPositionX = v.getX();
                 mPositionY = v.getY();
 
+                mOriginX = v.getX();
+                mOriginY = v.getY();
+
                 break;
             case MotionEvent.ACTION_UP:
+                reset(v);
                 break;
             case MotionEvent.ACTION_MOVE:
                 //get where we have moved to
@@ -77,5 +85,18 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
                 break;
         }
         return true;
+    }
+
+
+    private void reset(View v) {
+        mPositionX = mOriginX;
+        mPositionY = mOriginY;
+        v.animate()
+                .setDuration(200)
+                .setInterpolator(new AccelerateInterpolator())
+                .x(mOriginX)
+                .y(mOriginY);
+
+
     }
 }
