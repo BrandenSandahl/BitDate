@@ -6,6 +6,7 @@ import android.util.Log;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
 
 /**
  * Created by branden on 8/23/16.
@@ -22,5 +23,7 @@ public class App extends Application {
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+        ParseFacebookUtils.initialize(this);
     }
 }
