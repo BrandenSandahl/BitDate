@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //sign in if no user is signed in already
-        if (ParseUser.getCurrentUser() == null) {
+        if (UserDAO.getCurrentUser() == null) {
             Intent i = new Intent(this, SignInActivity.class );
             startActivity(i);
         }

@@ -7,3 +7,4 @@ BitFountain Android Tutorial to work with Android
 * FaceBook log in integration
 * Facebook log in creates Parse User
 * Pull in additional FB Info
+* Add in User class and DAO
