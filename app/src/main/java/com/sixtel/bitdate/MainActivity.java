@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.Parse;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -18,14 +20,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "yTygxd7jhXpNtTPWy2poMjJR8bBtrG34IyUQxozg", "t9XBrODeYwkoH1OA45tWByK52mgnsOLUfkdmGMcm");
+
     }
 
     @Override
