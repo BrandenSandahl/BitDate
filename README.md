@@ -8,3 +8,5 @@ BitFountain Android Tutorial to work with Android
 * Facebook log in creates Parse User
 * Pull in additional FB Info
 * Add in User class and DAO
+* Add in CardContainers and CardAdapter
+* Add OnTouchListener to Cards to capture touches and drags
