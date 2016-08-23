@@ -20,9 +20,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "yTygxd7jhXpNtTPWy2poMjJR8bBtrG34IyUQxozg", "t9XBrODeYwkoH1OA45tWByK52mgnsOLUfkdmGMcm");
-
     }
 
     @Override
