@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.List;
  */
 public class MainActivityFragment extends Fragment {
 
+    private CardStackContainer mCardStack;
+
     public MainActivityFragment() {
     }
 
@@ -21,7 +24,7 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
-        CardStackContainer cardStack = (CardStackContainer) v.findViewById(R.id.card_stack);
+        mCardStack = (CardStackContainer) v.findViewById(R.id.card_stack);
 
         //fake data
         User user = new User();
@@ -31,7 +34,23 @@ public class MainActivityFragment extends Fragment {
 
         //wire up adapter
         CardAdapter cardAdapter = new CardAdapter(getActivity(), users);
-        cardStack.setAdapter(cardAdapter);
+        mCardStack.setAdapter(cardAdapter);
+
+        Button nahButton = (Button) v.findViewById(R.id.nah_button);
+        nahButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCardStack.swipeLeft();
+            }
+        });
+
+        Button yeahButton = (Button) v.findViewById(R.id.yeah_button);
+        yeahButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCardStack.swipeRight();
+            }
+        });
 
         return v;
     }

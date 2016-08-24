@@ -1,12 +1,12 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
               android:clipChildren="false"
               tools:context="com.sixtel.bitdate.MainActivityFragment"
               tools:showIn="@layout/activity_main">
     <com.sixtel.bitdate.CardStackContainer
+        android:layout_centerHorizontal="true"
         android:id="@+id/card_stack"
         android:layout_width="250dp"
         android:layout_height="270dp"
@@ -14,4 +14,23 @@
         android:layout_marginTop="20dp"
         android:background="@android:color/holo_red_dark"/>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/nah_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text="Nah"/>
+        <Button
+            android:id="@+id/yeah_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text="yeah"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

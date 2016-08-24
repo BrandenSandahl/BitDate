@@ -13,3 +13,5 @@ BitFountain Android Tutorial to work with Android
 * Add in movement to the Card
 * Animate card back to original position
 * Add in Fling Gesture
+* Remove on Fling with custom animation
+* Add in buttons that perform the fling animation

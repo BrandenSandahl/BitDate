@@ -8,6 +8,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
 /**
@@ -29,6 +30,7 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
     private float mOriginY;
 
     private GestureDetector mGestureDetector;
+    private CardView mFrontCard;
 
     public CardStackContainer(Context context) {
         this(context, null, 0);
@@ -48,14 +50,43 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
         if (mAdapter.getCount() > 0 ) {
             CardView cardView = mAdapter.getView(0, null, this);
             cardView.setOnTouchListener(this);
+            mFrontCard = cardView;
             addView(cardView);
         }
     }
 
+    public void swipeRight() {
+        swipeCard(true);
+    }
+
+    public void swipeLeft() {
+        swipeCard(false);
+    }
+
+    private void swipeCard(boolean swipeRight) {
+        if (swipeRight) {
+            mFrontCard.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_right));
+        } else {
+            mFrontCard.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_left));
+        }
+        removeView(mFrontCard);
+        mFrontCard  = null;
+    }
+
+
+
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        mGestureDetector.onTouchEvent(event);
+        if (mGestureDetector.onTouchEvent(event)) {
+            if (mPositionX < mOriginX) {
+                swipeCard(false);
+            } else {
+                swipeCard(true);
+            }
+            return true;
+        }
 
         int action = event.getAction();
         switch (action) {
@@ -109,7 +140,6 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
     private class FlingListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-
             return true;
         }
     }
