@@ -15,3 +15,4 @@ BitFountain Android Tutorial to work with Android
 * Add in Fling Gesture
 * Remove on Fling with custom animation
 * Add in buttons that perform the fling animation
+* Add in button effects for pre and post 21

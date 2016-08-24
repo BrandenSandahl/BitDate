@@ -1,33 +1,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:clipChildren="false"
-              tools:context="com.sixtel.bitdate.MainActivityFragment"
-              tools:showIn="@layout/activity_main">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                tools:context="com.sixtel.bitdate.MainActivityFragment"
+                tools:showIn="@layout/activity_main">
     <com.sixtel.bitdate.CardStackContainer
-        android:layout_centerHorizontal="true"
         android:id="@+id/card_stack"
         android:layout_width="250dp"
         android:layout_height="270dp"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:background="@android:color/holo_red_dark"/>
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <Button
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+        <ImageButton
             android:id="@+id/nah_button"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/nah_button"
+            android:src="@drawable/ic_nah"
             android:text="Nah"/>
-        <Button
+        <ImageButton
             android:id="@+id/yeah_button"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/yeah_button"
+            android:src="@drawable/ic_yeah"
             android:text="yeah"/>
 
 
