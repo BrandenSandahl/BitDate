@@ -1,6 +1,7 @@
 package com.sixtel.bitdate;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -31,6 +32,8 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
 
     private GestureDetector mGestureDetector;
     private CardView mFrontCard;
+    private CardView mBackCard;
+    private int mNextPosition;
 
     public CardStackContainer(Context context) {
         this(context, null, 0);
@@ -47,12 +50,41 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
 
     public void setAdapter(CardAdapter adapter) {
         mAdapter = adapter;
-        if (mAdapter.getCount() > 0 ) {
+        DataSetObserver dataSetObserver = new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                addFrontCard();
+                addBackCard();
+            }
+        };
+        mAdapter.registerDataSetObserver(dataSetObserver);
+        addFrontCard();
+        addBackCard();
+    }
+
+    private void addFrontCard() {
+        if (mAdapter.getCount() > 0 && mFrontCard == null) {
             CardView cardView = mAdapter.getView(0, null, this);
+            cardView.setCardElevation(8);
             cardView.setOnTouchListener(this);
             mFrontCard = cardView;
             addView(cardView);
+            mNextPosition++;
         }
+    }
+
+
+    private void addBackCard() {
+        if (mAdapter.getCount() > mNextPosition && mBackCard == null) {
+            CardView cardView = mAdapter.getView(mNextPosition, null, this);
+            cardView.setTranslationY(30);
+            cardView.setTranslationX(15);
+            mBackCard = cardView;
+            addView(cardView);
+            mNextPosition++;
+        }
+        bringChildToFront(mFrontCard);
     }
 
     public void swipeRight() {
@@ -70,7 +102,18 @@ public class CardStackContainer extends RelativeLayout implements View.OnTouchLi
             mFrontCard.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_left));
         }
         removeView(mFrontCard);
-        mFrontCard  = null;
+        mFrontCard = null;
+        if (mBackCard != null) {
+            mBackCard.animate()
+                    .translationY(0)
+                    .translationX(0)
+                    .setDuration(200);
+            mBackCard.setOnTouchListener(this);
+            mBackCard.setCardElevation(8);
+            mFrontCard = mBackCard;
+            mBackCard = null;
+            addBackCard();
+        }
     }
 
 

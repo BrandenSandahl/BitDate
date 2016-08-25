@@ -14,9 +14,11 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements UserDAO.UserDataCallbacks{
 
     private CardStackContainer mCardStack;
+    private List<User> mUsers;
+    private CardAdapter mCardAdapter;
 
     public MainActivityFragment() {
     }
@@ -27,15 +29,13 @@ public class MainActivityFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         mCardStack = (CardStackContainer) v.findViewById(R.id.card_stack);
 
-        //fake data
-        User user = new User();
-        user.setFirstName("Ol Grey");
-        List<User> users = new ArrayList<>();
-        users.add(user);
+        //List of user from Parse
+        UserDAO.getAllUsers(this);
+        mUsers = new ArrayList<>();
 
         //wire up adapter
-        CardAdapter cardAdapter = new CardAdapter(getActivity(), users);
-        mCardStack.setAdapter(cardAdapter);
+        mCardAdapter = new CardAdapter(getActivity(), mUsers);
+        mCardStack.setAdapter(mCardAdapter);
 
         ImageButton nahButton = (ImageButton) v.findViewById(R.id.nah_button);
         nahButton.setOnClickListener(new View.OnClickListener() {
@@ -54,5 +54,11 @@ public class MainActivityFragment extends Fragment {
         });
 
         return v;
+    }
+
+    @Override
+    public void onUsersFetched(List<User> users) {
+        mUsers.addAll(users);
+        mCardAdapter.notifyDataSetChanged();
     }
 }
