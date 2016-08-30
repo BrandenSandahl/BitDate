@@ -17,31 +17,30 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+
+    private static final int SIGN_IN_REQUEST = 20;
 
     private ImageView mChoosingIcon;
     private ImageView mMatchesIcon;
     private ViewPager mPager;
+    private PagerAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        //sign in if no user is signed in already
-        if (UserDAO.getCurrentUser() == null) {
-            Intent i = new Intent(this, SignInActivity.class );
-            startActivity(i);
-        }
-
         mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        mAdapter = new PagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mAdapter);
         mPager.setOnPageChangeListener(this);
 
         mChoosingIcon = (ImageView) findViewById(R.id.logo_icon);
@@ -79,6 +78,30 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         actionBarDrawerToggle.syncState();
 
 
+        //sign in if no user is signed in already
+        if (UserDAO.getCurrentUser() == null) {
+            Intent i = new Intent(this, SignInActivity.class );
+            startActivityForResult(i, SIGN_IN_REQUEST);
+            return;
+        }
+
+        updateDrawer();
+    }
+
+    private void updateDrawer() {
+        ImageView photoView = (ImageView) findViewById(R.id.user_photo);
+        Picasso.with(this).load(UserDAO.getCurrentUser().getLargePictureURL()).into(photoView);
+        TextView nameView = (TextView) findViewById(R.id.user_name);
+        nameView.setText(UserDAO.getCurrentUser().getFirstName());
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SIGN_IN_REQUEST && resultCode == RESULT_OK) {
+            updateDrawer();
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

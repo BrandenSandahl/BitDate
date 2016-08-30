@@ -50,6 +50,7 @@ public class SignInActivity extends AppCompatActivity {
 
                         } else { //user already exists and is logged in
                             Log.d(TAG, "logged in existing user");
+                            setResult(RESULT_OK);
                             finish();
                         }
                     }
@@ -81,6 +82,7 @@ public class SignInActivity extends AppCompatActivity {
                             @Override
                             public void done(ParseException e) {
                                 if (e == null) {
+                                    setResult(RESULT_OK);
                                     finish();
                                 }
                             }
