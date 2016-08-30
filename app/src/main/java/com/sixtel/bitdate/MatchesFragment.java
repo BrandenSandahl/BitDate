@@ -2,11 +2,13 @@ package com.sixtel.bitdate;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,7 +21,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class MatchesFragment extends Fragment implements ActionDataSource.ActionDataCallbacks,
-        UserDAO.UserDataCallbacks{
+        UserDAO.UserDataCallbacks, AdapterView.OnItemClickListener{
 
 
     private MatchesAdapter mAdapter;
@@ -40,6 +42,7 @@ public class MatchesFragment extends Fragment implements ActionDataSource.Action
         mUsers = new ArrayList<>();
         mAdapter = new MatchesAdapter(mUsers);
         listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(this);
         return v;
     }
 
@@ -53,6 +56,15 @@ public class MatchesFragment extends Fragment implements ActionDataSource.Action
         mUsers.clear();
         mUsers.addAll(users);
         mAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        User user = mUsers.get(position);
+        Intent i = new Intent(getActivity(), ChatActivity.class);
+        i.putExtra(ChatActivity.USER_EXTRA, user);
+        startActivity(i);
 
     }
 

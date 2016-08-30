@@ -1,9 +1,11 @@
 package com.sixtel.bitdate;
 
+import java.io.Serializable;
+
 /**
  * Created by branden on 8/23/16.
  */
-public class User {
+public class User implements Serializable{
 
     private String mFirstName;
     private String mPictureURL;

@@ -24,3 +24,4 @@ BitFountain Android Tutorial to work with Android
 * Set up matches logic
 * ViewPager to move between fragments (swipe to move into a new fragment)
 * Drawer layout with customization
+* Add back button into the toolbar (ChatActivity.java)
