@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -23,13 +25,14 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     private ImageView mChoosingIcon;
     private ImageView mMatchesIcon;
+    private ViewPager mPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+
 
         //sign in if no user is signed in already
         if (UserDAO.getCurrentUser() == null) {
@@ -37,15 +40,43 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             startActivity(i);
         }
 
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        pager.setOnPageChangeListener(this);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        mPager.setOnPageChangeListener(this);
 
         mChoosingIcon = (ImageView) findViewById(R.id.logo_icon);
+        mChoosingIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPager.setCurrentItem(0);
+            }
+        });
         mMatchesIcon = (ImageView) findViewById(R.id.chat_icon);
+        mMatchesIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPager.setCurrentItem(1);
+
+            }
+        });
         mChoosingIcon.setSelected(true);
         toggleColor(mChoosingIcon);
         toggleColor(mMatchesIcon);
+
+
+        //get Drawer
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.open,
+                R.string.close);
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
 
 
     }
