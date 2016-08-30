@@ -62,7 +62,7 @@ public class SignInActivity extends AppCompatActivity {
     //asks for extra FB info
     private void getFacebookInfo() {
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "picture, first_name");
+        parameters.putString("fields", "picture, first_name, id");
         new GraphRequest(AccessToken.getCurrentAccessToken(),
                 "/me",
                 parameters,
@@ -73,6 +73,7 @@ public class SignInActivity extends AppCompatActivity {
                         JSONObject user = response.getJSONObject();
                         ParseUser currentUser = ParseUser.getCurrentUser();
                         currentUser.put("firstName", user.optString("first_name")); // put in the first name
+                        currentUser.put("faceBookId", user.optString("id")); // put
                         currentUser.put("pictureURL", user.optJSONObject("picture") //put in the user picture
                                 .optJSONObject("data")
                                 .optString("url"));

@@ -19,6 +19,8 @@ public class UserDAO {
 
     private static final String COLUMN_FIRST_NAME= "firstName";
     private static final String COLUMN_PICTURE_URL = "pictureURL";
+    private static final String COLUMN_FACEBOOK_ID = "facebookId";
+
     private static List<User> sUsers;
 
 
@@ -30,22 +32,37 @@ public class UserDAO {
     }
 
     public static void getAllUsers(final UserDataCallbacks callback) {
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereNotEqualTo("objectId", getCurrentUser().getId());
-        query.findInBackground(new FindCallback<ParseUser>() {
+        //get all users that have already had action performed on them by current user
+        ParseQuery<ParseObject> seenUsersQuery = new ParseQuery<ParseObject>(ActionDataSource.TABLE_NAME);
+        seenUsersQuery.whereEqualTo(ActionDataSource.COLUMN_BY_USER, ParseUser.getCurrentUser().getObjectId());
+        seenUsersQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseUser> list, ParseException e) {
+            public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
-                    List<User> users = new ArrayList<>();
-                    for (ParseUser parseUser : list) {
-                        User user = parseUserToUser(parseUser);
-                        users.add(user);
+                    List<String> ids = new ArrayList<>();
+                    for (ParseObject parseObject : list) {
+                        ids.add(parseObject.getString(ActionDataSource.COLUMN_TO_USER));
                     }
-                    if (callback != null) {
-                        callback.onUsersFetched(users);
-                    }
-                } else {
-                    Log.d("USERDAO", e.getMessage());
+                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                    query.whereNotEqualTo("objectId", getCurrentUser().getId());
+                    query.whereNotContainedIn("objectID", ids);
+                    query.findInBackground(new FindCallback<ParseUser>() {
+                        @Override
+                        public void done(List<ParseUser> list, ParseException e) {
+                            if (e == null) {
+                                List<User> users = new ArrayList<>();
+                                for (ParseUser parseUser : list) {
+                                    User user = parseUserToUser(parseUser);
+                                    users.add(user);
+                                }
+                                if (callback != null) {
+                                    callback.onUsersFetched(users);
+                                }
+                            } else {
+                                Log.d("USERDAO", e.getMessage());
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -57,6 +74,7 @@ public class UserDAO {
         user.setFirstName(parseUser.getString(COLUMN_FIRST_NAME));
         user.setPictureURL(parseUser.getString(COLUMN_PICTURE_URL));
         user.setId(parseUser.getObjectId());
+        user.setFacebookId(parseUser.getString(COLUMN_FACEBOOK_ID));
 
         return user;
     }

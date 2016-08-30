@@ -19,3 +19,7 @@ BitFountain Android Tutorial to work with Android
 * Add in second card to "Stack"
 * Get Users from Parse
 * DataSetObserver to the CardAdapter
+* Interface to get CardStackContainer and MainActivityFragment to pass data
+* Action table and ActionDataSouce to store Likes, Matches, and Skips
+* Set up matches logic
+* ViewPager to move between fragments (swipe to move into a new fragment)
