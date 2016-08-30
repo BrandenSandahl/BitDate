@@ -9,7 +9,6 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-
     <com.sixtel.material.RatioLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,11 +26,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/user_photo"
-                android:textColor="@android:color/white"
+                android:text="PlaceHolder"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:text="PlaceHolder"/>
+                android:textColor="@android:color/white"/>
         </RelativeLayout>
     </com.sixtel.material.RatioLayout>
+    <Button
+        android:id="@+id/edit_profile"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@drawable/bottom_border"
+        android:text="@string/edit_profile"/>
+    <Button
+        android:id="@+id/log_out"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@drawable/bottom_border"
+        android:text="@string/log_out"/>
 
 
 </LinearLayout>

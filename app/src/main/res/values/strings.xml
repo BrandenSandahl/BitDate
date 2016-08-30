@@ -9,4 +9,6 @@
 
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="log_out">Log Out</string>
 </resources>

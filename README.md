@@ -23,3 +23,4 @@ BitFountain Android Tutorial to work with Android
 * Action table and ActionDataSouce to store Likes, Matches, and Skips
 * Set up matches logic
 * ViewPager to move between fragments (swipe to move into a new fragment)
+* Drawer layout with customization
