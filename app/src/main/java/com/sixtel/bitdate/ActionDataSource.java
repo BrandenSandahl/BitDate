@@ -1,6 +1,7 @@
 package com.sixtel.bitdate;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -8,6 +9,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +62,31 @@ public class ActionDataSource {
         action.put(COLUMN_TO_USER, userId);
         action.put(COLUMN_TYPE, type);
         return action;
+    }
+
+    public static void getMatches(final ActionDataCallbacks callbacks) {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(TABLE_NAME);
+        query.whereEqualTo(COLUMN_BY_USER, ParseUser.getCurrentUser().getObjectId());
+        query.whereEqualTo(COLUMN_TYPE, TYPE_MATCHED);
+        query.orderByDescending("updatedAt");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if ( e == null ) {
+                    List<String> ids = new ArrayList<String>();
+                    for (ParseObject parseObject : list) {
+                        ids.add(parseObject.getString(COLUMN_TO_USER));
+                    }
+                    if (callbacks != null) {
+                        callbacks.onFetchedMatches(ids);
+                    }
+                }
+            }
+        });
+    }
+
+    public interface ActionDataCallbacks {
+        public void onFetchedMatches(List<String> matchIds);
     }
 
 

@@ -1,7 +1,5 @@
 package com.sixtel.bitdate;
 
-import android.util.Log;
-
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -20,6 +18,8 @@ public class UserDAO {
     private static final String COLUMN_FIRST_NAME= "firstName";
     private static final String COLUMN_PICTURE_URL = "pictureURL";
     private static final String COLUMN_FACEBOOK_ID = "facebookId";
+    private static final String COLUMN_ID = "objectId";
+
 
     private static List<User> sUsers;
 
@@ -49,21 +49,34 @@ public class UserDAO {
                     query.findInBackground(new FindCallback<ParseUser>() {
                         @Override
                         public void done(List<ParseUser> list, ParseException e) {
-                            if (e == null) {
-                                List<User> users = new ArrayList<>();
-                                for (ParseUser parseUser : list) {
-                                    User user = parseUserToUser(parseUser);
-                                    users.add(user);
-                                }
-                                if (callback != null) {
-                                    callback.onUsersFetched(users);
-                                }
-                            } else {
-                                Log.d("USERDAO", e.getMessage());
-                            }
+                            formatCallback(list, e, callback);
                         }
                     });
                 }
+            }
+        });
+    }
+
+    private static void formatCallback(List<ParseUser> list, ParseException e, UserDataCallbacks callback) {
+        if (e == null) {
+            List<User> users = new ArrayList<>();
+            for (ParseUser parseUser : list) {
+                User user = parseUserToUser(parseUser);
+                users.add(user);
+            }
+            if (callback != null) {
+                callback.onUsersFetched(users);
+            }
+        }
+    }
+
+    public static void getUsersIn(List<String> ids, final UserDataCallbacks callbacks) {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContainedIn(COLUMN_ID, ids);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> list, ParseException e) {
+                formatCallback(list, e, callbacks);
             }
         });
     }
